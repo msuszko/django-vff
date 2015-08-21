@@ -115,7 +115,7 @@ class GitBackend(object):
             f.seek(0)
             def fun(self, config_level=None):
                 return f
-            meth = MethodType(fun, self.repo, Repo)
+            meth = MethodType(fun, self.repo)
             setattr(self.repo, '_get_config_path', meth)
             setattr(self.repo, 'config_level', ['repository'])
             clean_environment()
@@ -136,7 +136,7 @@ class GitBackend(object):
             content.close()
         else:
             # This is a normal uploadedfile that we can stream.
-            with open(full_path, 'w') as f:
+            with open(full_path, 'wb') as f:
                 content.seek(0)
                 f.write(content.read())
         if settings.FILE_UPLOAD_PERMISSIONS is not None:
