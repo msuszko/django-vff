@@ -26,6 +26,8 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of Terena.
 
+from __future__ import unicode_literals
+
 import os
 import re
 import datetime
@@ -39,10 +41,10 @@ from django.core.files.move import file_move_safe
 
 from vff.abcs import VFFBackend
 
-USERPAT = re.compile(ur'^([^<]+) <(.+)>$')
-EMAILPAT = re.compile(ur'^([^@]+)@.+$')
+USERPAT = re.compile(r'^([^<]+) <(.+)>$')
+EMAILPAT = re.compile(r'^([^@]+)@.+$')
 
-GITCONFIG = u'''\
+GITCONFIG = '''\
 [user]
  name = %s
  email = %s
@@ -164,7 +166,7 @@ class GitBackend(object):
     def get_revision(self, instance, rev=None):
         fname = self.get_filename(instance)
         full_path = os.path.join(self.location, fname)
-        text = u''
+        text = ''
         if rev:
             blob = self.repo.commit(rev).tree[fname]
             text = blob.data_stream[3].read()
@@ -174,9 +176,9 @@ class GitBackend(object):
         return text.decode('utf8')
     
     def get_diff(self, instance, r1, r2):
-        md1 = self.get_revision(instance, r1).split(u'\n')
-        md2 = self.get_revision(instance, r2).split(u'\n')
-        diff = u'\n'.join(difflib.unified_diff(md1, md2,
+        md1 = self.get_revision(instance, r1).split('\n')
+        md2 = self.get_revision(instance, r2).split('\n')
+        diff = '\n'.join(difflib.unified_diff(md1, md2,
                                               fromfile=r1,
                                               tofile=r2,
                                               ))

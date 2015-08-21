@@ -28,10 +28,10 @@
 
 from abc import ABCMeta, abstractmethod
 
+from django.utils.six import with_metaclass
 
-class VFFBackend(object):
 
-    __metaclass__ = ABCMeta
+class VFFBackend(with_metaclass(ABCMeta)):
 
     @abstractmethod
     def __init__(self, fieldname):
