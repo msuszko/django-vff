@@ -31,7 +31,7 @@ import os
 from django.conf import settings
 from django.db.models.signals import post_save, post_delete
 from django.core.files.storage import FileSystemStorage
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 
 
 class VersionedStorage(FileSystemStorage):
@@ -70,7 +70,7 @@ class VersionedStorage(FileSystemStorage):
             post_save.disconnect(dispatch_uid=uid)
 
         post_save.connect(savefile, weak=False, dispatch_uid=uid)
-        return force_unicode(uid.replace('\\', '/'))
+        return force_text(uid.replace('\\', '/'))
 
     def delete(self, uid, username, commit_msg, save):
         def deletefile(sender, instance=None, **kwargs):
@@ -99,4 +99,4 @@ class VersionedStorage(FileSystemStorage):
             post_delete.disconnect(dispatch_uid=uid)
 
         post_delete.connect(deletefile, weak=False, dispatch_uid=uid)
-        return force_unicode(uid.replace('\\', '/'))
+        return force_text(uid.replace('\\', '/'))
